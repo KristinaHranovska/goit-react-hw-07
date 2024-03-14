@@ -6,15 +6,15 @@ import { BsPhone, BsPerson } from "react-icons/bs";
 import css from "./ContactForm.module.css";
 import { useDispatch } from "react-redux";
 import { initialValues } from "../../redux/constants";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/contactsOps";
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  number: Yup.string()
-    .matches(/^\d{3}-\d{2}-\d{2}$/, "Invalid phone number format")
+  phone: Yup.string()
+    .matches(/^\d{3}-\d{3}-\d{4}$/, "Invalid phone number format")
     .required("Required"),
 });
 
@@ -60,24 +60,24 @@ const ContactForm = () => {
           />
 
           <label className={css.formLabel} htmlFor={numberId}>
-            Number
+            Phone
           </label>
 
           <div className={css.thumb}>
             <Field
               className={`${css.formInput} ${
-                errors.number && touched.number && css.errorNumber
+                errors.phone && touched.phone && css.errorNumber
               }`}
               type="text"
-              name="number"
+              name="phone"
               id={numberId}
-              placeholder="xxx-xx-xx"
+              placeholder="xxx-xxx-xxxx"
             />
             <BsPhone className={css.iconInput} size="20" />
           </div>
           <ErrorMessage
             className={css.errorSpan}
-            name="number"
+            name="phone"
             component="span"
           />
 

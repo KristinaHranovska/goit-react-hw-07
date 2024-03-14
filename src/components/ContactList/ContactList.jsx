@@ -1,24 +1,35 @@
-import { nanoid } from "@reduxjs/toolkit";
 import Contact from "../Contact/Contact";
 import css from "./ContactList.module.css";
 import { useSelector } from "react-redux";
-import { selectContacts, selectNameFilter } from "../../redux/selectors";
+import { selectFilteredContacts } from "../../redux/selectors";
+import { selectError, selectLoading } from "../../redux/selectors";
+import { ThreeDots } from "react-loader-spinner";
 
 const ContactList = () => {
-  const contacts = useSelector(selectContacts);
-  const search = useSelector(selectNameFilter);
-  console.log(contacts);
+  const filteredContacts = useSelector(selectFilteredContacts);
 
-  const filterContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(search.trim().toLowerCase())
-  );
+  const isLoading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
   return (
     <>
-      {contacts.length !== 0 ? (
+      {isLoading && !error && (
+        <ThreeDots
+          visible={true}
+          height="80"
+          width="80"
+          color="#BFBABA"
+          radius="9"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      )}
+
+      {filteredContacts.length !== 0 ? (
         <ul className={css.listContacts}>
-          {filterContacts.map((contact) => (
-            <li className={css.itemContact} key={nanoid()}>
+          {filteredContacts.map((contact) => (
+            <li className={css.itemContact} key={contact.id}>
               <Contact data={contact} />
             </li>
           ))}
@@ -27,9 +38,9 @@ const ContactList = () => {
         <p className={css.infoText}>Your phonebook is empty 😢</p>
       )}
 
-      {!filterContacts.length && contacts.length !== 0 && (
+      {/* {!filteredContacts.length && (
         <p className={css.infoText}>No contacts found 😢</p>
-      )}
+      )} */}
     </>
   );
 };
