@@ -2,31 +2,16 @@ import Contact from "../Contact/Contact";
 import css from "./ContactList.module.css";
 import { useSelector } from "react-redux";
 import { selectFilteredContacts } from "../../redux/selectors";
-import { selectError, selectLoading } from "../../redux/selectors";
-import { ThreeDots } from "react-loader-spinner";
+import { selectLoading } from "../../redux/selectors";
 
 const ContactList = () => {
   const filteredContacts = useSelector(selectFilteredContacts);
-
   const isLoading = useSelector(selectLoading);
-  const error = useSelector(selectError);
-
   return (
     <>
-      {isLoading && !error && (
-        <ThreeDots
-          visible={true}
-          height="80"
-          width="80"
-          color="#BFBABA"
-          radius="9"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-      )}
-
-      {filteredContacts.length !== 0 ? (
+      {filteredContacts.length === 0 && !isLoading ? (
+        <p className={css.infoText}>No contacts found 😢</p>
+      ) : (
         <ul className={css.listContacts}>
           {filteredContacts.map((contact) => (
             <li className={css.itemContact} key={contact.id}>
@@ -34,13 +19,11 @@ const ContactList = () => {
             </li>
           ))}
         </ul>
-      ) : (
-        <p className={css.infoText}>Your phonebook is empty 😢</p>
       )}
 
-      {/* {!filteredContacts.length && (
-        <p className={css.infoText}>No contacts found 😢</p>
-      )} */}
+      {filteredContacts.length === 0 && filteredContacts.length !== 0 && (
+        <p className={css.infoText}>Your phonebook is empty 😢</p>
+      )}
     </>
   );
 };

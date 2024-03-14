@@ -82,7 +82,7 @@ const ContactForm = () => {
           />
 
           <button className={css.buttonAdd} type="submit">
-            Add contact
+            Add Contact
           </button>
         </Form>
       )}
