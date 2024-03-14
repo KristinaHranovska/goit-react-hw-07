@@ -1,5 +1,7 @@
 export const initialStateContacts = {
     items: [],
+    loading: false,
+    error: null
 }
 
 export const initialStateFilter = {
